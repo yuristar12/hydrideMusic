@@ -5,6 +5,7 @@ import 'package:flutter_music/config/global_constant.dart';
 import 'package:flutter_music/model/home_state_model.dart';
 import 'package:flutter_music/pages/home/home_content.dart';
 import 'package:flutter_music/pages/home/navBar/nav_bar.dart';
+import 'package:flutter_music/pages/songPlay/song_play_controller.dart';
 import 'package:provider/provider.dart';
 
 final GlobalKey<ScaffoldState> kHomeScaffoldKey =
@@ -46,19 +47,27 @@ class _HomeBodyState extends ProviderState<HomeBody, HomeStateModel> {
     }, shouldRebuild: (pre, next) {
       return pre != next;
     }, builder: (context, value, child) {
-      return Column(
-        // 渲染顶部
+      return Stack(
         children: [
-          // 顶部navBar
-          const NavBar(),
-          // 渲染子路由页面
-          Expanded(
-              child: Container(
-            decoration: const BoxDecoration(color: globaBackGroundColor),
-            child: const HomeContent(),
-          ))
+          //  主内容
+          Column(
+            // 渲染顶部
+            children: [
+              // 顶部navBar
+              const NavBar(),
+              // 渲染子路由页面
+              Expanded(
+                  child: Container(
+                decoration: const BoxDecoration(color: globaBackGroundColor),
+                child: const HomeContent(),
+              ))
+            ],
+            // 渲染子路由页面
+          ),
+          // 播放器
+
+          const SongPlayController(),
         ],
-        // 渲染子路由页面
       );
     });
   }

@@ -57,8 +57,6 @@ class _FindContentSongListItemState extends State<FindContentSongListItem>
               child: GestureDetector(
                 onTap: () {
                   if (kHomeBodyScaffoldKey.currentContext != null) {
-                    print(widget.songListItem.id);
-
                     Navigator.pushNamed(kHomeBodyScaffoldKey.currentContext!,
                         PageRouters.songlist,
                         arguments: {"songListId": widget.songListItem.id});

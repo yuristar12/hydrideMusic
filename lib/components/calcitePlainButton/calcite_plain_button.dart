@@ -19,6 +19,7 @@ class CalcitePlainButton extends StatelessWidget {
       this.minWidth = 0,
       this.disabled = false,
       required this.text,
+      this.buttonChildren,
       required this.onPressed});
   //  按钮的模式
   buttonMode mode;
@@ -30,6 +31,8 @@ class CalcitePlainButton extends StatelessWidget {
   bool disabled;
 
   double minWidth;
+
+  dynamic buttonChildren;
 
   void Function() onPressed;
 
@@ -73,6 +76,38 @@ class CalcitePlainButton extends StatelessWidget {
     ;
   }
 
+  List<Widget> buildButtonChildren() {
+    if (buttonChildren != null) {
+      if (buttonChildren is Widget) {
+        return [
+          buttonChildren,
+          Container(
+            width: 8,
+          )
+        ];
+      }
+    }
+    return [Container()];
+  }
+
+  buildButtonContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ...buildButtonChildren().map((e) => e),
+        Text(
+          text,
+          style: TextStyle(
+            fontFamily: globaSourceHanSansCNBold,
+            color: mode == buttonMode.deep ? Colors.white : Colors.black,
+            fontSize: buildButtonTextSize(),
+          ),
+        ),
+      ],
+    );
+  }
+
   buildModePlainButton() {
     return MaterialButton(
       mouseCursor:
@@ -82,39 +117,24 @@ class CalcitePlainButton extends StatelessWidget {
       padding: buildButtonPadding(),
       shape: Border.all(width: 1, color: Colors.black),
       height: buildButtonHeight(),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontFamily: globaSourceHanSansCNBold,
-          color: Colors.black,
-          fontSize: buildButtonTextSize(),
-        ),
-      ),
+      child: buildButtonContent(),
     );
   }
 
   buildModeDeepButton() {
     return MaterialButton(
-      mouseCursor:
-          disabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
-      onPressed: disabled ? null : onPressed,
-      padding: buildButtonPadding(),
-      height: buildButtonHeight(),
-      color: Colors.black,
-      minWidth: minWidth,
-      elevation: 0,
-      hoverElevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
-      disabledColor: Colors.black,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontFamily: globaSourceHanSansCNBold,
-          color: Colors.white,
-          fontSize: buildButtonTextSize(),
-        ),
-      ),
-    );
+        mouseCursor:
+            disabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+        onPressed: disabled ? null : onPressed,
+        padding: buildButtonPadding(),
+        height: buildButtonHeight(),
+        color: Colors.black,
+        minWidth: minWidth,
+        elevation: 0,
+        hoverElevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0.0)),
+        disabledColor: Colors.black,
+        child: buildButtonContent());
   }
 
   @override

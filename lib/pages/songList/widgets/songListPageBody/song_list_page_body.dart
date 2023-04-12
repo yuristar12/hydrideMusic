@@ -19,14 +19,15 @@ class SongListPageBody extends StatefulWidget {
 class _SongListPageBodyState extends State<SongListPageBody> {
   late final String _songListId;
 
-  dynamic songListDetailModel;
+  bool wait = true;
+  late SongListDetailModel songListDetailModel;
 
   @override
   void initState() {
     // TODO: implement initState
     _songListId = widget.songListId;
 
-    Timer(Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 1), () {
       setSongListDetail(_songListId);
     });
 
@@ -38,21 +39,21 @@ class _SongListPageBodyState extends State<SongListPageBody> {
     var res = await SongListPageRequest.getSongListDetail(id);
     if (res.success) {
       setState(() {
+        wait = false;
         songListDetailModel = res.data!;
-        print('xxxxxxx:${songListDetailModel}');
       });
     }
   }
 
 //  主体内容
   List<Widget> buildSongListDetailBody() {
-    if (songListDetailModel is SongListDetailModel) {
+    if (!wait) {
       return [
         SongListPageHeader(songListDetailModel: songListDetailModel),
         const SizedBox(
           height: 8,
         ),
-        const SongListPageContent()
+        SongListPageContent(tracks: songListDetailModel.playlist?.tracks)
       ];
     } else {
       return const [

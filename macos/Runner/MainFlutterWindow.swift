@@ -1,6 +1,6 @@
 import Cocoa
 import FlutterMacOS
-import bitsdojo_window_macos // Add this line
+import bitsdojo_window_macos
 
 class MainFlutterWindow: BitsdojoWindow {
   override func awakeFromNib() {

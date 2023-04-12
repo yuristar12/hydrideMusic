@@ -25,6 +25,15 @@ class SongListPageHeader extends StatelessWidget {
     );
   }
 
+  dynamic getDescription() {
+    if (songListDetailModel.playlist!.description != null) {
+      dynamic str = songListDetailModel.playlist!.description;
+      return str;
+    } else {
+      return '暂无描述';
+    }
+  }
+
 //  基础信息
   Widget buildSongListInfo() {
     Playlist? playlist = songListDetailModel.playlist;
@@ -85,10 +94,12 @@ class SongListPageHeader extends StatelessWidget {
                   decoration: TextDecoration.none,
                   fontFamily: globaSourceHanSansCNBold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 12,
             ),
-            const SongListPageHeaderDes()
+            SongListPageHeaderDes(
+              des: getDescription(),
+            )
           ],
         )
       ],
@@ -106,8 +117,8 @@ class SongListPageHeader extends StatelessWidget {
           width: 20,
         ),
         Flexible(
-          child: buildSongListInfo(),
           fit: FlexFit.loose,
+          child: buildSongListInfo(),
         )
       ],
     );

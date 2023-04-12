@@ -22,6 +22,7 @@ class FindStateModel extends BaseChageNotifier {
   void reloadData() {
     requestBanner();
     requestNewSons();
+    requestRecommentSongList();
   }
 
   // 获取轮播图数据
