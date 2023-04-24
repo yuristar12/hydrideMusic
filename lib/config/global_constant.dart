@@ -59,3 +59,12 @@ enum PlayTypeEnum {
   toPlay,
   toPause,
 }
+
+enum PlaySongModelEnum {
+  // 随机
+  randomModel,
+  // 单曲循环
+  singleModel,
+  // 列表循环
+  listLoopModel
+}

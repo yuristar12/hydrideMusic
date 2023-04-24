@@ -13,22 +13,51 @@ class SongPlayControllerContentVolume extends StatefulWidget {
 
 class _SongPlayControllerContentVolumeState
     extends State<SongPlayControllerContentVolume> {
-  double volumn = 0;
-  final SongPlayControllerContentVolumeController
-      songPlayControllerContentVolumeController =
-      SongPlayControllerContentVolumeController();
+  double volume = 0;
+  bool isWait = true;
+  late final SongPlayControllerContentVolumeController
+      songPlayControllerContentVolumeController;
 
   @override
   void initState() {
     super.initState();
 
-    // songPlayControllerContentVolumeController
-    //     .getSystemVolume()
-    //     .then((value) => {
-    //           setState(() {
-    //             volumn = value / 100;
-    //           })
-    //         });
+    songPlayControllerContentVolumeController =
+        SongPlayControllerContentVolumeController(onSystemVolumeChangeCallback);
+
+    songPlayControllerContentVolumeController
+        .getSystemVolume()
+        .then((value) => {
+              setState(() {
+                volume = value;
+                isWait = false;
+              })
+            });
+  }
+
+  void onSystemVolumeChangeCallback(paramsVolume) {
+    setState(() {
+      volume = paramsVolume;
+    });
+  }
+
+  Widget buildVolumeWidget(paramsVolume) {
+    if (isWait) {
+      return const Text("正在获取设备音量",
+          style: TextStyle(fontSize: 8, fontFamily: globaSourceHanSansCNBold));
+    } else {
+      return CalciteProgressBar(
+        value: paramsVolume,
+        height: 4,
+        useDrage: true,
+        onChanged: (value) {
+          setState(() {
+            volume = value;
+          });
+          songPlayControllerContentVolumeController.setSystemVolume(value);
+        },
+      );
+    }
   }
 
   @override
@@ -45,15 +74,10 @@ class _SongPlayControllerContentVolumeState
               decoration: TextDecoration.none,
               color: Colors.black),
         ),
-        CalciteProgressBar(
-          value: volumn,
-          height: 4,
-          useDrage: true,
-          useClick: true,
-          onChanged: (value) {
-            print(value);
-          },
-        )
+        const SizedBox(
+          height: 8,
+        ),
+        buildVolumeWidget(volume)
       ],
     );
   }

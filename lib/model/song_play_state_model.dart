@@ -1,4 +1,6 @@
 import 'package:flutter_music/config/base/base_change_notifier.dart';
+import 'package:flutter_music/config/global_constant.dart';
+import 'package:flutter_music/controller/play_song_controller.dart';
 import 'package:flutter_music/pages/songList/model/song_list_detail_model.dart';
 
 class SongPlayStateModel extends BaseChageNotifier {
@@ -13,6 +15,9 @@ class SongPlayStateModel extends BaseChageNotifier {
 
   //  歌曲信息
   Tracks? _songInfo;
+
+  // 显示的播放模式的icon
+  PlaySongModelEnum _playSongModelEnum = PlaySongController.getInstance().model;
 
 // set
 
@@ -32,6 +37,13 @@ class SongPlayStateModel extends BaseChageNotifier {
   set isPlay(bool type) {
     if (type == _isPlay) return;
     _isPlay = type;
+    notifyListeners();
+  }
+
+  set playSongModelEnum(PlaySongModelEnum playSongModelEnum) {
+    if (playSongModelEnum == _playSongModelEnum) return;
+    _playSongModelEnum = playSongModelEnum;
+    PlaySongController.getInstance().setModel(playSongModelEnum);
     notifyListeners();
   }
 
@@ -58,4 +70,6 @@ class SongPlayStateModel extends BaseChageNotifier {
   Tracks? get songInfo => _songInfo;
 
   bool get isPlay => _isPlay;
+
+  PlaySongModelEnum get playSongModelEnum => _playSongModelEnum;
 }
